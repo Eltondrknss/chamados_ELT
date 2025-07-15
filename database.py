@@ -48,4 +48,73 @@ def criar_chamado(titulo, descricao, solicitante):
         # fecha a conexao dando certo ou nao
         if conn:
             conn.close()
+
+def listar_todos_chamados():
+    # busca os chamados da tabela e retorna uma lista de tuplas
+    conn = None
+    try:
+        conn = conectar()
+        if conn:
+            cursor = conn.cursor()
+            sql = "SELECT ID, Titulo, Solicitante, Status, DataCriacao FROM Chamados ORDER BY ID DESC"
+            cursor.execute(sql)
+
+        chamados = cursor.fetchall() # fetchall() busca todos os resultados da consulta
+        return chamados
+    
+    except pymssql.Error as e:
+        print(f"Erro ao listar chamados: {e}")
+        return [] # retornar lista vazia em caso de erro
+    
+    finally:
+        if conn:
+            conn.close()
+
+def buscar_chamado_por_ID(id_chamado):
+    # busca um chamado pelo ID. Retorna uma tupla com os dados do chamado ou None se nao encontrar
+    conn = None
+    try:
+        conn = conectar()
+        if conn:
+            cursor = conn.cursor()
+            sql = "SELECT * FROM Chamados WHERE ID = %s"
+            cursor.execute(sql, (id_chamado,))
+            chamado = cursor.fetchone() #fetchone() busca apenas o primeiro resultado da consulta
+            return chamado
+        
+    except pymssql.Error as e:
+        print(f"Erro ao buscar chamado: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+def atualizar_status_chamado(id_chamado, novo_status):
+    conn = None
+    try:
+        conn = conectar()
+        if conn:
+            cursor = conn.cursor()
+
+            sql = "UPDATE Chamados SET Status = %s WHERE ID = %s"
+            cursor.execute(sql, (novo_status, id_chamado))
+
+            conn.commit()
+
+            # rowcount diz quantas linhas foram afetadas
+            # se for maior que zero, funcionou
+            if cursor.rowcount > 0:
+                return True
+            else:
+                return False
+            
+    except pymssql.Error as e:
+        print("Erro ao atualizar o chamado: {e}")
+        if conn:
+            conn.rollback() # desfaz a alteraçao se der erro
+        return False
+    
+    finally:
+        if conn:
+            conn.close()
             
