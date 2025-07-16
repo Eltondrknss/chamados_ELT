@@ -117,4 +117,4 @@ def atualizar_status_chamado(id_chamado, novo_status):
     finally:
         if conn:
             conn.close()
-            
+             

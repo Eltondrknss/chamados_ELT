@@ -72,6 +72,7 @@ def atualizar_chamado_interface():
     chamado = buscar_chamado_por_ID(id_chamado)
     if not chamado:
         print(f"Erro: Chamado com ID: {id_chamado} não encontrado.")
+        return
 
     print(f"Status atual do chamado {id_chamado}: {chamado[-1]}") # o status é o ultimo item da tupla
 
