@@ -122,6 +122,7 @@ def atualizar_status_chamado(id_chamado, novo_status):
             conn.close()
 
 def deletar_chamado(id_chamado):
+    # deleta um chamado
     conn = None
     try:
         conn = conectar()
@@ -137,13 +138,14 @@ def deletar_chamado(id_chamado):
                 return True
             else:
                 return False
-            
+    # retorna erro em caso de falha       
     except pymssql.Error as e:
         print(f"Eror ao deletar o chamado: {e}")
         if conn:
             conn.rollback()
         return False
-    
+
+    # fecha a conexão
     finally:
         if conn:
             conn.close()
