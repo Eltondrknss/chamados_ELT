@@ -50,12 +50,12 @@ def main():
                     print("\n--- Detalhes do Chamado ---")
                     print(f"ID: {id_c}, Status: {status}")
                     print(f"Aberto em: {data_c.strftime('%d/%m/%Y às %H:%M:%S')}")
+                    print("----------------------------")
                     print(f"Solicitante: {sol}, Título: {titulo}")
                     print("----------------------------")
                     print(f"Descrição:\n{desc}")
                     print("----------------------------")
-                    # if status:
-                    #     print(f"Status:\n{status}")
+
             except ValueError:
                 print(id_chamado)
                 print("Erro! Por favor, digite um ID válido")
@@ -64,8 +64,12 @@ def main():
             print("\n---- Atualizar Status de um Chamado ----")
             try:
                 id_chamado = int(input("Digite o ID do chamado que deseja atualizar: "))
-                novo_status = input("Digite o novo sutatus (Em Andamento, Resolvido): ")
-                gestor.atualizar_status_do_chamado(id_chamado, novo_status)
+                chamado = gestor.encontrar_chamado_por_id(id_chamado)
+                if not chamado:
+                    print(f"Chamado com o ID {id_chamado} não encontrado.")
+                else:
+                    novo_status = input("Digite o novo sutatus (Em Andamento, Resolvido): ")
+                    gestor.atualizar_status_do_chamado(id_chamado, novo_status)
             except ValueError:
                 print("Erro: Por favor digite um ID válido.")
 
