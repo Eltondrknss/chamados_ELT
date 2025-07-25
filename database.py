@@ -78,7 +78,7 @@ def buscar_chamado_por_ID(id_chamado):
         if conn:
             cursor = conn.cursor()
             sql = "SELECT * FROM Chamados WHERE ID = %s"
-            cursor.execute(sql, (id_chamado,))
+            cursor.execute(sql, (id_chamado))
             chamado = cursor.fetchone() #fetchone() busca apenas o primeiro resultado da consulta
             return chamado
         
@@ -117,4 +117,30 @@ def atualizar_status_chamado(id_chamado, novo_status):
     finally:
         if conn:
             conn.close()
-             
+
+def deletar_chamado(id_chamado):
+    conn = None
+    try:
+        conn = conectar()
+        if conn:
+            cursor = conn.cursor()
+
+            sql = "DELETE FROM Chamados WHERE ID = %s"
+            cursor.execute(sql, (id_chamado))
+
+            conn.commit()
+
+            if cursor.rowcount > 0:
+                return True
+            else:
+                return False
+            
+    except pymssql.Error as e:
+        print(f"Eror ao deletar o chamado: {e}")
+        if conn:
+            conn.rollback()
+        return False
+    
+    finally:
+        if conn:
+            conn.close()
