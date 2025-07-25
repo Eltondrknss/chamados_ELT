@@ -1,9 +1,13 @@
 import pymssql
+import os
+from dotenv import load_dotenv
 
-DB_SERVER = 'DESKTOP-VRE32VN'
-DB_USER = 'eltondrk'
-DB_PASSWORD = 'eltonabc'
-DB_NAME = 'ChamadosELT'
+load_dotenv()
+
+DB_SERVER = os.getenv('DB_SERVER')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
 
 def conectar(): # funçao pra conectar no banco com retorno de erro em caso de falha
     try:
@@ -36,12 +40,11 @@ def criar_chamado(titulo, descricao, solicitante):
             # confirma a transacao e salva no banco
             conn.commit()
 
-            print("Chamado aberto com sucesso!!!")
             return True
         
     except pymssql.Error as e:
         if conn:
-            conn.rollback*() #desfaz a transacao caso der erro
+            conn.rollback() #desfaz a transacao caso der erro
         return False
     
     finally:
