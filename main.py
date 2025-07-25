@@ -1,5 +1,6 @@
 from manager import GestorDeChamados
 
+# exibe o menu inicial, ocultando opções 4 e 5 para usuarios que nao forem 'admin'
 def mostrar_menu(perfil):
     print("\n--- Menu Principal do Sistema de Chamados ---")
     print("1. Abrir um novo chamado")
@@ -14,6 +15,9 @@ def mostrar_menu(perfil):
     print("6. Sair")
     return input("Escolha uma opção: ")
 
+# função que recebe os dados solicitados na opção escolhida
+# e depois envia para a classe relacionada (database.py).
+# Dados invalidos retornam mensagem de erro de uma forma didatica.
 def main():
     gestor = GestorDeChamados()
 
@@ -111,5 +115,6 @@ def main():
         
         input("\nPressione ENTER para continuar...")
 
+# apenas executa a função main() se o arquivo executado tiver sido o main.py
 if __name__ == "__main__":
     main()
